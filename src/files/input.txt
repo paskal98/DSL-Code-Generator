@@ -1,0 +1,41 @@
+commands {
+                doorClosed   'd'
+                drawerOpened 'w'
+                lightOn      'l'
+                doorOpened   'o'
+                panelClosed  'p'
+            }
+
+            resetCommands {
+                doorOpened
+            }
+
+            events {
+                unlockPanel 'U'
+                lockPanel   'L'
+                lockDoor    'C'
+                unlockDoor  'D'
+            }
+
+            state idle {
+                actions {unlockDoor lockPanel}
+                doorClosed => active
+            }
+
+            state active {
+                drawerOpened => waitingForLight
+                lightOn => waitingForDrawer
+            }
+
+            state waitingForLight {
+                lightOn => unlockedPanel
+            }
+
+            state waitingForDrawer {
+                drawerOpened => unlockedPanel
+            }
+
+            state unlockedPanel {
+                actions {unlockPanel lockDoor}
+                panelClosed => idle
+            }
